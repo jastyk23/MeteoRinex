@@ -1,6 +1,7 @@
 from pathlib import Path
 import transform_coord
 import use_db
+from os import environ
 
 
 class MeteoRinex:
@@ -78,15 +79,19 @@ Vaisala             *Vaisala WXT510                      HR SENSOR MOD/TYPE/ACC
 if __name__ == '__main__':
     station = {
         'CNG1': {
-            'x': 2846194.170,
-            'y': 2185227.730,
-            'z': 5255558.030
+            'x': 2846194.17,
+            'y': 2185227.73,
+            'z': 5255558.03
         }
     }
-    db_data = {'host': 'localhost',
-                'user': 'user',
-                'password': '1234567890',
-                'database': 'local_db'}
+    host = environ.get('HOST')
+    db_name = environ.get('DB_NAME')
+    user_name = environ.get('USER')
+    passw = environ.get('PASSWORD')
+    db_data = {'host': host,
+                'user': user_name,
+                'password': passw,
+                'database': db_name}
     raw_date = "2022-11-20"
     transform_coord = transform_coord.Transformation(xyz=[station['CNG1']['x'], station['CNG1']['y'], station['CNG1']['z']])
     coord = transform_coord.transformCoord('GSK2011', 'WGS84')
